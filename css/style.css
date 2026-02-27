@@ -608,3 +608,66 @@ p { margin-bottom: 1rem; }
   font-size: 0.95rem;
   color: var(--primary);
 }
+
+/* Performance Tables */
+.perf-tables {
+  margin-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+.perf-table-wrap h3 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--heading);
+}
+.perf-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+.perf-table thead th {
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-light);
+  padding: 8px 12px;
+  border-bottom: 2px solid var(--border);
+}
+.perf-table thead th:not(:first-child) {
+  text-align: right;
+}
+.perf-table tbody tr {
+  border-bottom: 1px solid var(--border);
+}
+.perf-table tbody tr:last-child {
+  border-bottom: none;
+}
+.perf-table td {
+  padding: 10px 12px;
+}
+.perf-name {
+  font-weight: 500;
+  color: var(--heading);
+}
+.perf-close {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-light);
+}
+.perf-cell {
+  text-align: right;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.perf-up { color: #16a34a; }
+.perf-down { color: #dc2626; }
+.perf-flat { color: var(--text-light); }
+
+@media (max-width: 600px) {
+  .perf-table { font-size: 0.82rem; }
+  .perf-table td, .perf-table thead th { padding: 8px 6px; }
+}
