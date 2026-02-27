@@ -589,13 +589,14 @@ p { margin-bottom: 1rem; }
 /* Article Two-Column Layout */
 .article-layout {
   display: flex;
-  gap: 48px;
+  gap: 40px;
   align-items: flex-start;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 .article-body {
   flex: 1;
   min-width: 0;
-  max-width: 720px;
 }
 .article-body h2 { margin-top: 32px; margin-bottom: 12px; }
 .article-body p { color: var(--text-light); line-height: 1.8; margin-bottom: 1.25rem; }
@@ -620,7 +621,7 @@ p { margin-bottom: 1rem; }
 
 /* Sidebar */
 .article-sidebar {
-  width: 380px;
+  width: 340px;
   flex-shrink: 0;
   position: sticky;
   top: 80px;
