@@ -523,3 +523,88 @@ p { margin-bottom: 1rem; }
 .mt-4 { margin-top: 32px; }
 .mb-4 { margin-bottom: 32px; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+
+/* --- Insights / Articles --- */
+.insights-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 800px;
+}
+.insight-card {
+  display: block;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px 32px;
+  transition: all 0.25s ease;
+  text-decoration: none;
+  color: var(--text);
+}
+.insight-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  border-color: transparent;
+  color: var(--text);
+}
+.insight-card h3 { margin-bottom: 8px; font-size: 1.2rem; }
+.insight-card p { color: var(--text-light); font-size: 0.95rem; margin-bottom: 12px; }
+.insight-card .card-link { font-weight: 600; font-size: 0.9rem; color: var(--primary); }
+.insight-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.insight-card-date { color: var(--text-light); font-size: 0.85rem; }
+.article-tag {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.article-tag-weekly {
+  background: var(--primary-light);
+  color: var(--primary);
+}
+.article-tag-monthly {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+/* Article Page */
+.article-meta-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.article-date-header {
+  color: rgba(255,255,255,0.8);
+  font-size: 0.95rem;
+}
+.article-body { max-width: 720px; }
+.article-body h2 { margin-top: 32px; margin-bottom: 12px; }
+.article-body p { color: var(--text-light); line-height: 1.8; margin-bottom: 1.25rem; }
+.article-reading-time {
+  color: var(--text-light);
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+.article-back {
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  max-width: 720px;
+}
+.article-back a {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--primary);
+}
