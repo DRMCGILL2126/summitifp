@@ -282,8 +282,11 @@ p { margin-bottom: 1rem; }
 .card-link:hover { gap: 10px; }
 
 /* --- Features / Value Props --- */
-.features { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 32px; }
+.features { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px 48px; max-width: 900px; margin: 0 auto; }
 .feature { text-align: center; padding: 24px 16px; }
+@media (max-width: 600px) {
+  .features { grid-template-columns: 1fr; gap: 24px; }
+}
 .feature-icon {
   width: 64px;
   height: 64px;
