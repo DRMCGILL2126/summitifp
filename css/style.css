@@ -268,7 +268,7 @@ p { margin-bottom: 1rem; }
   align-items: center;
   justify-content: center;
   margin-bottom: 20px;
-  font-size: 1.5rem;
+  color: var(--primary);
 }
 .card h3 { margin-bottom: 12px; }
 .card p { color: var(--text-light); font-size: 0.95rem; margin-bottom: 16px; }
@@ -293,7 +293,6 @@ p { margin-bottom: 1rem; }
   align-items: center;
   justify-content: center;
   margin: 0 auto 16px;
-  font-size: 1.75rem;
   color: var(--primary);
 }
 .feature h3 { margin-bottom: 8px; }
@@ -446,7 +445,7 @@ p { margin-bottom: 1rem; }
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  font-size: 1.25rem;
+  color: var(--primary);
 }
 .contact-info-item h3 { font-size: 1rem; margin-bottom: 2px; }
 .contact-info-item p { color: var(--text-light); font-size: 0.95rem; margin: 0; }
