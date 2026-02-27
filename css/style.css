@@ -41,6 +41,7 @@ a:hover { color: var(--primary-dark); }
 img { max-width: 100%; height: auto; display: block; }
 
 .container { max-width: var(--max-width); margin: 0 auto; padding: 0 24px; }
+.container:has(.article-layout) { max-width: 1280px; }
 
 /* --- Typography --- */
 h1, h2, h3, h4 {
@@ -591,10 +592,9 @@ p { margin-bottom: 1rem; }
   display: flex;
   gap: 40px;
   align-items: flex-start;
-  max-width: 1200px;
-  margin: 0 auto;
 }
-.article-body {
+.article-layout .article-body.prose {
+  max-width: none;
   flex: 1;
   min-width: 0;
 }
@@ -682,7 +682,7 @@ p { margin-bottom: 1rem; }
 .perf-down { color: #dc2626; }
 .perf-flat { color: var(--text-light); }
 
-@media (max-width: 1024px) {
+@media (max-width: 768px) {
   .article-layout {
     flex-direction: column-reverse;
   }
