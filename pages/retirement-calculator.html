@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Retirement Calculator | Summit Investments &amp; Financial Planning | Uniontown, OH</title>
+  <meta name="description" content="Run retirement scenarios with three different return assumptions. See how your savings, contributions, and Social Security could play out under conservative, moderate, and optimistic projections.">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16.png">
+  <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+  <link rel="canonical" href="https://www.summitifp.com/pages/retirement-calculator.html">
+  <meta property="og:title" content="Retirement Calculator | Summit Investments &amp; Financial Planning">
+  <meta property="og:description" content="Run retirement scenarios under three return assumptions. See if you're on track.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.summitifp.com/pages/retirement-calculator.html">
+  <meta property="og:image" content="https://www.summitifp.com/images/headshot.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .calc-header {
+      text-align: center;
+      padding: 3rem 1rem 2rem;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .calc-header h1 {
+      font-size: 2.25rem;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 0.75rem;
+    }
+    .calc-header p {
+      font-size: 1.125rem;
+      color: #6b7280;
+      line-height: 1.6;
+    }
+    .calc-section {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 1rem 3rem;
+    }
+    .calc-form {
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    .calc-form h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #111827;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid #e5e7eb;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+    @media (max-width: 768px) {
+      .form-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (max-width: 500px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+    .form-group label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 0.375rem;
+    }
+    .form-group .input-note {
+      font-size: 0.75rem;
+      color: #9ca3af;
+      margin-bottom: 0.25rem;
+    }
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .input-prefix {
+      position: absolute;
+      left: 12px;
+      font-size: 0.9375rem;
+      color: #6b7280;
+      pointer-events: none;
+      font-weight: 500;
+    }
+    .input-suffix {
+      position: absolute;
+      right: 12px;
+      font-size: 0.9375rem;
+      color: #6b7280;
+      pointer-events: none;
+      font-weight: 500;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 0.625rem 0.75rem;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 0.9375rem;
+      font-family: 'Inter', sans-serif;
+      color: #111827;
+      background: #f9fafb;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .form-group input:focus {
+      outline: none;
+      border-color: #1a56db;
+      box-shadow: 0 0 0 3px rgba(26, 86, 219, 0.1);
+      background: #fff;
+    }
+    .form-group input.dollar-input {
+      padding-left: 1.75rem;
+    }
+    .form-group input.percent-input {
+      padding-right: 1.75rem;
+    }
+    .scenarios-display {
+      margin-top: 1.5rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid #e5e7eb;
+    }
+    .scenarios-display h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 1rem;
+    }
+    .scenario-rates {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .scenario-rate {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+    .scenario-rate.conservative {
+      background: #eff6ff;
+      color: #1e40af;
+      border: 1px solid #bfdbfe;
+    }
+    .scenario-rate.moderate {
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+    }
+    .scenario-rate.optimistic {
+      background: #fffbeb;
+      color: #92400e;
+      border: 1px solid #fde68a;
+    }
+    .scenario-rate .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    .scenario-rate.conservative .dot { background: #1a56db; }
+    .scenario-rate.moderate .dot { background: #059669; }
+    .scenario-rate.optimistic .dot { background: #d97706; }
+    .btn-run {
+      display: block;
+      width: 100%;
+      padding: 0.875rem 2rem;
+      margin-top: 1.5rem;
+      background: #1a56db;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-run:hover {
+      background: #1e40af;
+    }
+
+    /* Results */
+    .results-container {
+      display: none;
+    }
+    .results-container.show {
+      display: block;
+    }
+    .summary-cards {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    @media (max-width: 768px) {
+      .summary-cards {
+        flex-direction: column;
+      }
+    }
+    .summary-card {
+      flex: 1;
+      background: #fff;
+      border-radius: 12px;
+      padding: 1.5rem;
+      border: 1px solid #e5e7eb;
+    }
+    .summary-card.conservative {
+      border-top: 4px solid #1a56db;
+    }
+    .summary-card.moderate {
+      border-top: 4px solid #059669;
+    }
+    .summary-card.optimistic {
+      border-top: 4px solid #d97706;
+    }
+    .summary-card h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    .summary-card.conservative h3 { color: #1a56db; }
+    .summary-card.moderate h3 { color: #059669; }
+    .summary-card.optimistic h3 { color: #d97706; }
+    .summary-stat {
+      margin-bottom: 0.75rem;
+    }
+    .summary-stat .stat-label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.025em;
+      margin-bottom: 0.125rem;
+    }
+    .summary-stat .stat-value {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #111827;
+    }
+    .summary-stat .stat-value.success {
+      color: #059669;
+    }
+    .summary-stat .stat-value.danger {
+      color: #dc2626;
+    }
+    .summary-stat .stat-value.warning {
+      color: #d97706;
+    }
+    .summary-card .outcome-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      margin-top: 0.5rem;
+    }
+    .outcome-badge.success {
+      background: #ecfdf5;
+      color: #059669;
+    }
+    .outcome-badge.danger {
+      background: #fef2f2;
+      color: #dc2626;
+    }
+
+    /* Chart */
+    .chart-container {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .chart-container h2 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: #111827;
+      margin-bottom: 1rem;
+    }
+    .chart-legend {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+    .chart-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: #374151;
+    }
+    .chart-legend-item .legend-line {
+      width: 24px;
+      height: 3px;
+      border-radius: 2px;
+    }
+    .chart-legend-item.conservative .legend-line { background: #1a56db; }
+    .chart-legend-item.moderate .legend-line { background: #059669; }
+    .chart-legend-item.optimistic .legend-line { background: #d97706; }
+    .chart-legend-item.retirement .legend-line {
+      background: transparent;
+      border-top: 2px dashed #9ca3af;
+    }
+    .chart-canvas-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 100%;
+    }
+    .chart-canvas-wrapper canvas {
+      width: 100%;
+      height: auto;
+    }
+
+    /* Table */
+    .table-container {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+      overflow: hidden;
+    }
+    .table-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 1rem 1.5rem;
+      background: #fff;
+      border: none;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+    }
+    .table-toggle h2 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: #111827;
+      margin: 0;
+    }
+    .table-toggle .toggle-icon {
+      font-size: 1.25rem;
+      color: #6b7280;
+      transition: transform 0.2s;
+    }
+    .table-toggle.open .toggle-icon {
+      transform: rotate(180deg);
+    }
+    .table-body {
+      display: none;
+      overflow-x: auto;
+    }
+    .table-body.open {
+      display: block;
+    }
+    .table-body table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+    .table-body th {
+      background: #f9fafb;
+      padding: 0.625rem 1rem;
+      text-align: right;
+      font-weight: 600;
+      color: #374151;
+      border-bottom: 2px solid #e5e7eb;
+      white-space: nowrap;
+    }
+    .table-body th:first-child {
+      text-align: center;
+    }
+    .table-body td {
+      padding: 0.5rem 1rem;
+      text-align: right;
+      color: #374151;
+      border-bottom: 1px solid #f3f4f6;
+      white-space: nowrap;
+    }
+    .table-body td:first-child {
+      text-align: center;
+      font-weight: 600;
+    }
+    .table-body tr.retirement-row {
+      background: #eff6ff;
+    }
+    .table-body tr.retirement-row td {
+      font-weight: 600;
+      border-bottom-color: #bfdbfe;
+    }
+    .table-body td.depleted {
+      color: #dc2626;
+      font-weight: 600;
+    }
+    .table-body td.conservative-col { color: #1e40af; }
+    .table-body td.moderate-col { color: #065f46; }
+    .table-body td.optimistic-col { color: #92400e; }
+
+    /* Disclaimers */
+    .disclaimers {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .disclaimers p {
+      font-size: 0.8125rem;
+      color: #6b7280;
+      line-height: 1.6;
+      margin-bottom: 0.5rem;
+    }
+    .disclaimers p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* CTA */
+    .calc-cta {
+      text-align: center;
+      padding: 2.5rem 1.5rem;
+      background: linear-gradient(135deg, #1a56db 0%, #1e40af 100%);
+      border-radius: 12px;
+      margin-bottom: 2rem;
+    }
+    .calc-cta h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.75rem;
+    }
+    .calc-cta p {
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 1.5rem;
+      font-size: 1rem;
+    }
+    .calc-cta a {
+      display: inline-block;
+      padding: 0.75rem 2rem;
+      background: #fff;
+      color: #1a56db;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.15s, transform 0.15s;
+    }
+    .calc-cta a:hover {
+      background: #f0f4ff;
+      transform: translateY(-1px);
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="6" fill="#1a56db"/><path d="M8 22L16 8L24 22H8Z" fill="white" opacity="0.9"/><path d="M12 22L16 14L20 22H12Z" fill="white"/></svg>
+        Summit <span>Investments. Financial Planning.</span>
+      </a>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/pages/about.html">About</a></li>
+        <li><a href="/pages/services.html">Services</a></li>
+        <li><a href="/pages/why-work-with-me.html">Why Work With Me</a></li>
+        <li><a href="/pages/insights.html">Market Insights</a></li>
+        <li><a href="/pages/knowledge-center.html">Knowledge Center</a></li>
+        <li><a href="/pages/contact.html" class="nav-cta">Get in Touch</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    <div class="calc-header">
+      <h1>Retirement Scenario Calculator</h1>
+      <p>See how different return assumptions could affect your retirement outlook.</p>
+    </div>
+
+    <div class="calc-section">
+      <div class="calc-form">
+        <h2>Your Information</h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="currentAge">Current Age</label>
+            <div class="input-wrapper">
+              <input type="text" id="currentAge" inputmode="numeric" value="55">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="retirementAge">Retirement Age</label>
+            <div class="input-wrapper">
+              <input type="text" id="retirementAge" inputmode="numeric" value="65">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="lifeExpectancy">Life Expectancy</label>
+            <div class="input-wrapper">
+              <input type="text" id="lifeExpectancy" inputmode="numeric" value="90">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="currentSavings">Current Savings</label>
+            <div class="input-wrapper">
+              <span class="input-prefix">$</span>
+              <input type="text" id="currentSavings" inputmode="numeric" class="dollar-input" value="500,000">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="annualContribution">Annual Contribution</label>
+            <span class="input-note">Until retirement</span>
+            <div class="input-wrapper">
+              <span class="input-prefix">$</span>
+              <input type="text" id="annualContribution" inputmode="numeric" class="dollar-input" value="20,000">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="annualSpending">Annual Spending in Retirement</label>
+            <span class="input-note">In today's dollars</span>
+            <div class="input-wrapper">
+              <span class="input-prefix">$</span>
+              <input type="text" id="annualSpending" inputmode="numeric" class="dollar-input" value="60,000">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="monthlySS">Monthly Social Security</label>
+            <span class="input-note">At your claiming age</span>
+            <div class="input-wrapper">
+              <span class="input-prefix">$</span>
+              <input type="text" id="monthlySS" inputmode="numeric" class="dollar-input" value="2,500">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="ssStartAge">Social Security Start Age</label>
+            <div class="input-wrapper">
+              <input type="text" id="ssStartAge" inputmode="numeric" value="67">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inflationRate">Inflation Rate</label>
+            <div class="input-wrapper">
+              <input type="text" id="inflationRate" inputmode="decimal" class="percent-input" value="2.5">
+              <span class="input-suffix">%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="scenarios-display">
+          <h3>Scenario Return Rates (Nominal)</h3>
+          <div class="scenario-rates">
+            <div class="scenario-rate conservative">
+              <span class="dot"></span>
+              Conservative &mdash; 5% per year
+            </div>
+            <div class="scenario-rate moderate">
+              <span class="dot"></span>
+              Moderate &mdash; 7% per year
+            </div>
+            <div class="scenario-rate optimistic">
+              <span class="dot"></span>
+              Optimistic &mdash; 9% per year
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-run" id="btnRun" onclick="runScenarios()">Run Scenarios</button>
+      </div>
+
+      <!-- Results -->
+      <div class="results-container" id="resultsContainer">
+
+        <!-- Summary Cards -->
+        <div class="summary-cards" id="summaryCards"></div>
+
+        <!-- Chart -->
+        <div class="chart-container">
+          <h2>Portfolio Balance Over Time</h2>
+          <div class="chart-legend">
+            <div class="chart-legend-item conservative">
+              <span class="legend-line"></span> Conservative (5%)
+            </div>
+            <div class="chart-legend-item moderate">
+              <span class="legend-line"></span> Moderate (7%)
+            </div>
+            <div class="chart-legend-item optimistic">
+              <span class="legend-line"></span> Optimistic (9%)
+            </div>
+            <div class="chart-legend-item retirement">
+              <span class="legend-line"></span> Retirement Age
+            </div>
+          </div>
+          <div class="chart-canvas-wrapper">
+            <canvas id="chartCanvas"></canvas>
+          </div>
+        </div>
+
+        <!-- Year-by-Year Table -->
+        <div class="table-container">
+          <button class="table-toggle" id="tableToggle" onclick="toggleTable()">
+            <h2>Year-by-Year Breakdown</h2>
+            <span class="toggle-icon">&#9660;</span>
+          </button>
+          <div class="table-body" id="tableBody">
+            <table>
+              <thead>
+                <tr>
+                  <th>Age</th>
+                  <th>Conservative</th>
+                  <th>Moderate</th>
+                  <th>Optimistic</th>
+                </tr>
+              </thead>
+              <tbody id="tableRows"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Disclaimers -->
+        <div class="disclaimers">
+          <p>This calculator provides hypothetical projections for educational purposes only. It does not account for taxes, investment fees, sequence-of-returns risk, or changes in spending patterns.</p>
+          <p>Actual results will vary. Past performance does not guarantee future results.</p>
+          <p>For a comprehensive retirement analysis tailored to your specific situation, contact Summit Investments &amp; Financial Planning.</p>
+        </div>
+
+        <!-- CTA -->
+        <div class="calc-cta">
+          <h2>Want a Personalized Retirement Analysis?</h2>
+          <p>Every situation is different. Let's build a plan that reflects your goals, your income sources, and your risk comfort level.</p>
+          <a href="/pages/contact.html">Get in Touch</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <h3>Summit Investments &amp; Financial Planning</h3>
+          <p>A registered investment advisor offering advisory services in the State of Ohio and in other jurisdictions where exempted.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Services</h4>
+          <ul>
+            <li><a href="/pages/services.html#investment-management">Investment Management</a></li>
+            <li><a href="/pages/services.html#financial-planning">Financial Planning</a></li>
+            <li><a href="/pages/services.html#retirement-planning">Retirement Planning</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="/pages/about.html">About Michael McGill</a></li>
+            <li><a href="/pages/why-work-with-me.html">Why Work With Me</a></li>
+            <li><a href="/pages/insights.html">Market Insights</a></li>
+            <li><a href="/pages/knowledge-center.html">Knowledge Center</a></li>
+            <li><a href="/pages/contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="tel:3302564283">330-256-4283</a></li>
+            <li><a href="mailto:Michael.McGill@SummitIFP.com">Michael.McGill@SummitIFP.com</a></li>
+            <li>Uniontown, OH 44685</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Summit Investments and Financial Planning. All rights reserved.</span>
+        <span class="footer-adv-links">
+          <a href="https://adviserinfo.sec.gov/firm/summary/330408" target="_blank" rel="noopener">Form ADV 2A</a>
+          <a href="https://adviserinfo.sec.gov/firm/brochure/330408" target="_blank" rel="noopener">Form ADV 2B</a>
+        </span>
+      </div>
+      <div class="footer-disclosure">
+        <p>Registration does not imply a certain level of skill or training. All written content on this site is for information purposes only. All information or ideas provided should be discussed in detail with an advisor, accountant or legal counsel prior to implementation.</p>
+        <p>Client assets are custodied at Charles Schwab &amp; Co., Inc. ("Schwab"), member <a href="https://www.sipc.org/" target="_blank" rel="noopener">SIPC</a>. Schwab provides custody, trading, and support services. Summit Investments and Financial Planning is not owned by, affiliated with, or supervised by Schwab.</p>
+      </div>
+    </div>
+  </footer>
+  <script>
+    window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('scrolled',window.scrollY>10)});
+  </script>
+  <script>
+    // ---- Number formatting helpers ----
+    function formatWithCommas(str) {
+      const clean = str.replace(/[^0-9]/g, '');
+      if (!clean) return '';
+      return Number(clean).toLocaleString('en-US');
+    }
+
+    function parseNumber(str) {
+      return Number(String(str).replace(/[^0-9.\-]/g, '')) || 0;
+    }
+
+    function formatDollar(n) {
+      if (n < 0) return '-$' + Math.abs(Math.round(n)).toLocaleString('en-US');
+      return '$' + Math.round(n).toLocaleString('en-US');
+    }
+
+    // Attach formatting to dollar inputs
+    document.querySelectorAll('.dollar-input').forEach(function(input) {
+      input.addEventListener('input', function() {
+        const pos = this.selectionStart;
+        const oldLen = this.value.length;
+        this.value = formatWithCommas(this.value);
+        const newLen = this.value.length;
+        const newPos = pos + (newLen - oldLen);
+        this.setSelectionRange(newPos, newPos);
+      });
+    });
+
+    // ---- Toggle year-by-year table ----
+    function toggleTable() {
+      var toggle = document.getElementById('tableToggle');
+      var body = document.getElementById('tableBody');
+      toggle.classList.toggle('open');
+      body.classList.toggle('open');
+    }
+
+    // ---- Main calculation ----
+    function runScenarios() {
+      var currentAge = parseInt(parseNumber(document.getElementById('currentAge').value));
+      var retirementAge = parseInt(parseNumber(document.getElementById('retirementAge').value));
+      var lifeExpectancy = parseInt(parseNumber(document.getElementById('lifeExpectancy').value));
+      var currentSavings = parseNumber(document.getElementById('currentSavings').value);
+      var annualContribution = parseNumber(document.getElementById('annualContribution').value);
+      var annualSpending = parseNumber(document.getElementById('annualSpending').value);
+      var monthlySS = parseNumber(document.getElementById('monthlySS').value);
+      var ssStartAge = parseInt(parseNumber(document.getElementById('ssStartAge').value));
+      var inflationRate = parseNumber(document.getElementById('inflationRate').value) / 100;
+
+      // Validate inputs
+      if (currentAge >= retirementAge) {
+        alert('Current age must be less than retirement age.');
+        return;
+      }
+      if (retirementAge >= lifeExpectancy) {
+        alert('Retirement age must be less than life expectancy.');
+        return;
+      }
+      if (currentAge < 18 || lifeExpectancy > 120) {
+        alert('Please enter realistic age values.');
+        return;
+      }
+
+      var rates = [0.05, 0.07, 0.09];
+      var labels = ['Conservative', 'Moderate', 'Optimistic'];
+      var colors = ['#1a56db', '#059669', '#d97706'];
+      var results = [];
+
+      for (var s = 0; s < 3; s++) {
+        var rate = rates[s];
+        var balance = currentSavings;
+        var yearData = [];
+        var ranOutAge = null;
+        var totalSS = 0;
+        var balanceAtRetirement = 0;
+
+        for (var age = currentAge; age <= lifeExpectancy; age++) {
+          if (age === currentAge) {
+            // Starting point, just record
+            yearData.push({ age: age, balance: balance });
+            continue;
+          }
+
+          if (age <= retirementAge) {
+            // Accumulation phase
+            balance = balance * (1 + rate) + annualContribution;
+          } else {
+            // Distribution phase
+            var yearsAfterRetirement = age - retirementAge;
+            var inflatedSpending = annualSpending * Math.pow(1 + inflationRate, yearsAfterRetirement);
+            var ssIncome = 0;
+            if (age >= ssStartAge) {
+              var yearsOfCOLA = age - ssStartAge;
+              ssIncome = monthlySS * 12 * Math.pow(1 + inflationRate, yearsOfCOLA);
+              totalSS += ssIncome;
+            }
+            balance = balance * (1 + rate) - inflatedSpending + ssIncome;
+            if (balance <= 0 && ranOutAge === null) {
+              ranOutAge = age;
+              balance = 0;
+            }
+            if (balance < 0) balance = 0;
+          }
+
+          if (age === retirementAge) {
+            balanceAtRetirement = balance;
+          }
+
+          yearData.push({ age: age, balance: balance });
+        }
+
+        results.push({
+          label: labels[s],
+          color: colors[s],
+          rate: rates[s],
+          data: yearData,
+          balanceAtRetirement: balanceAtRetirement,
+          balanceAtEnd: yearData[yearData.length - 1].balance,
+          ranOutAge: ranOutAge,
+          totalSS: totalSS
+        });
+      }
+
+      renderSummaryCards(results);
+      renderChart(results, currentAge, retirementAge, lifeExpectancy);
+      renderTable(results, currentAge, retirementAge, lifeExpectancy);
+
+      document.getElementById('resultsContainer').classList.add('show');
+      document.getElementById('resultsContainer').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // ---- Render summary cards ----
+    function renderSummaryCards(results) {
+      var container = document.getElementById('summaryCards');
+      var html = '';
+      var classes = ['conservative', 'moderate', 'optimistic'];
+
+      for (var i = 0; i < results.length; i++) {
+        var r = results[i];
+        var endValueClass = r.ranOutAge ? 'danger' : 'success';
+        var endValueText = r.ranOutAge
+          ? 'Runs out at age ' + r.ranOutAge
+          : formatDollar(r.balanceAtEnd);
+        var badgeClass = r.ranOutAge ? 'danger' : 'success';
+        var badgeText = r.ranOutAge ? 'Money runs out' : 'Money lasts';
+
+        html += '<div class="summary-card ' + classes[i] + '">';
+        html += '  <h3>' + r.label + ' (' + (r.rate * 100) + '%)</h3>';
+        html += '  <div class="summary-stat">';
+        html += '    <div class="stat-label">Portfolio at Retirement</div>';
+        html += '    <div class="stat-value">' + formatDollar(r.balanceAtRetirement) + '</div>';
+        html += '  </div>';
+        html += '  <div class="summary-stat">';
+        html += '    <div class="stat-label">Portfolio at Life Expectancy</div>';
+        html += '    <div class="stat-value ' + endValueClass + '">' + endValueText + '</div>';
+        html += '  </div>';
+        html += '  <div class="summary-stat">';
+        html += '    <div class="stat-label">Total Social Security Received</div>';
+        html += '    <div class="stat-value">' + formatDollar(r.totalSS) + '</div>';
+        html += '  </div>';
+        html += '  <span class="outcome-badge ' + badgeClass + '">' + badgeText + '</span>';
+        html += '</div>';
+      }
+
+      container.innerHTML = html;
+    }
+
+    // ---- Render chart ----
+    function renderChart(results, currentAge, retirementAge, lifeExpectancy) {
+      var canvas = document.getElementById('chartCanvas');
+      var dpr = window.devicePixelRatio || 1;
+      var wrapper = canvas.parentElement;
+      var w = wrapper.clientWidth;
+      var h = Math.min(420, Math.max(280, w * 0.45));
+
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      canvas.style.width = w + 'px';
+      canvas.style.height = h + 'px';
+
+      var ctx = canvas.getContext('2d');
+      ctx.scale(dpr, dpr);
+
+      // Chart area
+      var padLeft = 80;
+      var padRight = 20;
+      var padTop = 20;
+      var padBottom = 45;
+      var chartW = w - padLeft - padRight;
+      var chartH = h - padTop - padBottom;
+
+      // Find max value
+      var maxVal = 0;
+      for (var s = 0; s < results.length; s++) {
+        for (var j = 0; j < results[s].data.length; j++) {
+          if (results[s].data[j].balance > maxVal) {
+            maxVal = results[s].data[j].balance;
+          }
+        }
+      }
+      // Round up maxVal to a nice number
+      var magnitude = Math.pow(10, Math.floor(Math.log10(maxVal || 1)));
+      maxVal = Math.ceil(maxVal / magnitude) * magnitude;
+      if (maxVal === 0) maxVal = 100000;
+
+      var totalYears = lifeExpectancy - currentAge;
+
+      function xPos(age) {
+        return padLeft + ((age - currentAge) / totalYears) * chartW;
+      }
+      function yPos(val) {
+        return padTop + chartH - (val / maxVal) * chartH;
+      }
+
+      // Clear
+      ctx.clearRect(0, 0, w, h);
+
+      // Grid lines
+      ctx.strokeStyle = '#e5e7eb';
+      ctx.lineWidth = 1;
+      var gridLines = 5;
+      for (var g = 0; g <= gridLines; g++) {
+        var gy = padTop + (g / gridLines) * chartH;
+        ctx.beginPath();
+        ctx.moveTo(padLeft, gy);
+        ctx.lineTo(padLeft + chartW, gy);
+        ctx.stroke();
+
+        // Y-axis labels
+        var yVal = maxVal - (g / gridLines) * maxVal;
+        ctx.fillStyle = '#9ca3af';
+        ctx.font = '11px Inter, sans-serif';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
+        if (yVal >= 1000000) {
+          ctx.fillText('$' + (yVal / 1000000).toFixed(1) + 'M', padLeft - 8, gy);
+        } else if (yVal >= 1000) {
+          ctx.fillText('$' + (yVal / 1000).toFixed(0) + 'K', padLeft - 8, gy);
+        } else {
+          ctx.fillText('$' + yVal.toFixed(0), padLeft - 8, gy);
+        }
+      }
+
+      // X-axis labels
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      var xStep = totalYears <= 20 ? 2 : totalYears <= 40 ? 5 : 10;
+      for (var age = currentAge; age <= lifeExpectancy; age += xStep) {
+        var xx = xPos(age);
+        ctx.fillStyle = '#9ca3af';
+        ctx.font = '11px Inter, sans-serif';
+        ctx.fillText(age, xx, padTop + chartH + 8);
+
+        // Subtle vertical grid
+        ctx.strokeStyle = '#f3f4f6';
+        ctx.beginPath();
+        ctx.moveTo(xx, padTop);
+        ctx.lineTo(xx, padTop + chartH);
+        ctx.stroke();
+      }
+
+      // X-axis label
+      ctx.fillStyle = '#9ca3af';
+      ctx.font = '12px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('Age', padLeft + chartW / 2, h - 4);
+
+      // Retirement age dashed line
+      var retX = xPos(retirementAge);
+      ctx.setLineDash([6, 4]);
+      ctx.strokeStyle = '#9ca3af';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(retX, padTop);
+      ctx.lineTo(retX, padTop + chartH);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Label retirement line
+      ctx.fillStyle = '#6b7280';
+      ctx.font = '10px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('Retirement', retX, padTop - 2);
+
+      // Draw lines
+      for (var s = 0; s < results.length; s++) {
+        var data = results[s].data;
+        ctx.strokeStyle = results[s].color;
+        ctx.lineWidth = 2.5;
+        ctx.lineJoin = 'round';
+        ctx.beginPath();
+        for (var j = 0; j < data.length; j++) {
+          var px = xPos(data[j].age);
+          var py = yPos(data[j].balance);
+          if (j === 0) {
+            ctx.moveTo(px, py);
+          } else {
+            ctx.lineTo(px, py);
+          }
+        }
+        ctx.stroke();
+      }
+
+      // Axes
+      ctx.strokeStyle = '#d1d5db';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(padLeft, padTop);
+      ctx.lineTo(padLeft, padTop + chartH);
+      ctx.lineTo(padLeft + chartW, padTop + chartH);
+      ctx.stroke();
+    }
+
+    // ---- Render table ----
+    function renderTable(results, currentAge, retirementAge, lifeExpectancy) {
+      var tbody = document.getElementById('tableRows');
+      var html = '';
+
+      for (var i = 0; i <= lifeExpectancy - currentAge; i++) {
+        var age = currentAge + i;
+        var isRetirement = age === retirementAge;
+        html += '<tr' + (isRetirement ? ' class="retirement-row"' : '') + '>';
+        html += '<td>' + age + '</td>';
+
+        for (var s = 0; s < results.length; s++) {
+          var d = results[s].data[i];
+          var colClasses = ['conservative-col', 'moderate-col', 'optimistic-col'];
+          if (d.balance === 0 && age > retirementAge && results[s].ranOutAge !== null && age >= results[s].ranOutAge) {
+            html += '<td class="depleted">Depleted</td>';
+          } else {
+            html += '<td class="' + colClasses[s] + '">' + formatDollar(d.balance) + '</td>';
+          }
+        }
+
+        html += '</tr>';
+      }
+
+      tbody.innerHTML = html;
+    }
+
+    // ---- Resize chart on window resize ----
+    var resizeTimer;
+    window.addEventListener('resize', function() {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function() {
+        if (document.getElementById('resultsContainer').classList.contains('show')) {
+          document.getElementById('btnRun').click();
+        }
+      }, 200);
+    });
+  </script>
+</body>
+</html>
