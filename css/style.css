@@ -708,3 +708,110 @@ p { margin-bottom: 1rem; }
   .perf-table td, .perf-table thead th { padding: 5px 4px; }
   .perf-tables { flex-direction: column; }
 }
+
+/* Key Takeaways Box */
+.takeaways-box {
+  background: var(--primary-light);
+  border-left: 4px solid var(--primary);
+  border-radius: 0 8px 8px 0;
+  padding: 20px 24px;
+  margin-bottom: 32px;
+}
+.takeaways-box h3 {
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--primary);
+  margin-bottom: 12px;
+}
+.takeaways-box ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.takeaways-box li {
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 8px;
+  color: var(--text);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+.takeaways-box li:last-child { margin-bottom: 0; }
+.takeaways-box li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 9px;
+  width: 8px;
+  height: 8px;
+  background: var(--primary);
+  border-radius: 50%;
+}
+
+/* Market Indicators Row */
+.ind-row {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  padding: 16px 24px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.ind-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+}
+.ind-label {
+  font-weight: 600;
+  color: var(--heading);
+}
+.ind-price {
+  color: var(--text-light);
+  font-variant-numeric: tabular-nums;
+}
+.ind-change {
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.ind-up { color: #16a34a; }
+.ind-down { color: #dc2626; }
+.ind-flat { color: var(--text-light); }
+
+@media (max-width: 600px) {
+  .ind-row { gap: 12px 20px; padding: 12px 16px; }
+  .ind-pill { font-size: 0.8rem; }
+}
+
+/* Share Buttons */
+.share-buttons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+.share-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-light);
+}
+.share-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  color: white;
+}
+.share-btn:hover { transform: scale(1.1); opacity: 0.9; }
+.share-linkedin { background: #0077B5; }
+.share-x { background: #000; }
+.share-email { background: var(--primary); }
