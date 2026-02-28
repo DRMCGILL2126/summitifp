@@ -849,6 +849,8 @@ p { margin-bottom: 1rem; }
    ======================================== */
 
 /* Category Tags */
+.article-tag-ss { background: #ffedd5; color: #9a3412; }
+.article-tag-medicare { background: #e0f2fe; color: #075985; }
 .article-tag-retirement { background: #fef3c7; color: #92400e; }
 .article-tag-tax { background: #d1fae5; color: #065f46; }
 .article-tag-estate { background: #ede9fe; color: #5b21b6; }
