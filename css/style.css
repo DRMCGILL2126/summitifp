@@ -353,7 +353,7 @@ p { margin-bottom: 1rem; }
   color: var(--text-light);
 }
 .two-col-text li::before {
-  content: 'â';
+  content: '✓';
   position: absolute;
   left: 0;
   color: var(--primary);
