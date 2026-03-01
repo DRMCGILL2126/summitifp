@@ -598,6 +598,14 @@
             </div>
           </div>
           <div class="form-group">
+            <label for="contributionIncrease">Contribution Increase</label>
+            <span class="input-note">Annual raise in contributions</span>
+            <div class="input-wrapper">
+              <input type="text" id="contributionIncrease" inputmode="decimal" class="percent-input" value="2">
+              <span class="input-suffix">%</span>
+            </div>
+          </div>
+          <div class="form-group">
             <label for="annualSpending">Annual Spending in Retirement</label>
             <span class="input-note">In today's dollars</span>
             <div class="input-wrapper">
@@ -856,6 +864,7 @@
       var monthlySS = parseNumber(document.getElementById('monthlySS').value);
       var ssStartAge = parseInt(parseNumber(document.getElementById('ssStartAge').value));
       var inflationRate = parseNumber(document.getElementById('inflationRate').value) / 100;
+      var contributionIncrease = parseNumber(document.getElementById('contributionIncrease').value) / 100;
 
       // Validate inputs
       if (currentAge >= retirementAge) {
@@ -892,8 +901,10 @@
           }
 
           if (age <= retirementAge) {
-            // Accumulation phase
-            balance = balance * (1 + rate) + annualContribution;
+            // Accumulation phase (contributions grow each year)
+            var yearsContributing = age - currentAge;
+            var adjustedContribution = annualContribution * Math.pow(1 + contributionIncrease, yearsContributing - 1);
+            balance = balance * (1 + rate) + adjustedContribution;
           } else {
             // Distribution phase
             var yearsAfterRetirement = age - retirementAge;
