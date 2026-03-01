@@ -270,11 +270,12 @@ p { margin-bottom: 1rem; }
     gap: 8px;
     border-bottom: 1px solid var(--border);
     transform: translateY(-120%);
-    transition: transform 0.3s ease;
+    visibility: hidden;
+    transition: transform 0.3s ease, visibility 0s 0.3s;
     max-height: calc(100vh - 72px);
     overflow-y: auto;
   }
-  .nav-links.open { transform: translateY(0); box-shadow: var(--shadow-lg); }
+  .nav-links.open { transform: translateY(0); visibility: visible; box-shadow: var(--shadow-lg); transition: transform 0.3s ease, visibility 0s 0s; }
   .nav-links a { font-size: 1rem; }
   .nav-cta { font-size: 1rem; padding: 12px 24px; }
 
