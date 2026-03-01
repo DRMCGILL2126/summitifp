@@ -42,12 +42,30 @@
       </button>
       <ul class="nav-links">
         <li><a href="/">Home</a></li>
-        <li><a href="/pages/about.html">About</a></li>
-        <li><a href="/pages/services.html">Services</a></li>
-        <li><a href="/pages/fees.html">Fees</a></li>
-        <li><a href="/pages/why-work-with-me.html" class="active">Why Work With Me</a></li>
-        <li><a href="/pages/insights.html">Market Insights</a></li>
-        <li><a href="/pages/knowledge-center.html">Knowledge Center</a></li>
+        <li class="nav-dropdown">
+          <button class="nav-dropdown-toggle active" aria-expanded="false" aria-haspopup="true">About <svg class="nav-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 5 6 8 9 5"/></svg></button>
+          <ul class="nav-dropdown-menu">
+            <li><a href="/pages/about.html">About Michael McGill</a></li>
+            <li><a href="/pages/why-work-with-me.html" class="active">Why Work With Me</a></li>
+            <li><a href="/pages/what-to-expect.html">What to Expect</a></li>
+          </ul>
+        </li>
+        <li class="nav-dropdown">
+          <button class="nav-dropdown-toggle" aria-expanded="false" aria-haspopup="true">Services <svg class="nav-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 5 6 8 9 5"/></svg></button>
+          <ul class="nav-dropdown-menu">
+            <li><a href="/pages/services.html">Our Services</a></li>
+            <li><a href="/pages/fees.html">Fees &amp; Pricing</a></li>
+            <li><a href="/pages/retirement-calculator.html">Retirement Calculator</a></li>
+          </ul>
+        </li>
+        <li class="nav-dropdown">
+          <button class="nav-dropdown-toggle" aria-expanded="false" aria-haspopup="true">Resources <svg class="nav-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 5 6 8 9 5"/></svg></button>
+          <ul class="nav-dropdown-menu">
+            <li><a href="/pages/insights.html">Market Insights</a></li>
+            <li><a href="/pages/knowledge-center.html">Knowledge Center</a></li>
+            <li><a href="/pages/faq.html">FAQ</a></li>
+          </ul>
+        </li>
         <li><a href="/pages/contact.html" class="nav-cta">Get in Touch</a></li>
       </ul>
     </div>
@@ -234,6 +252,44 @@
       </div>
     </div>
   </footer>
-  <script>window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('scrolled',window.scrollY>10)});</script>
+  <script>
+    window.addEventListener('scroll', () => {
+      document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 10);
+    });
+
+    // Dropdown navigation
+    (function() {
+      const isMobile = () => window.innerWidth <= 1060;
+      document.querySelectorAll('.nav-dropdown-toggle').forEach(btn => {
+        btn.addEventListener('click', e => {
+          if (!isMobile()) return;
+          e.preventDefault();
+          const dd = btn.closest('.nav-dropdown');
+          const isOpen = dd.classList.contains('open');
+          document.querySelectorAll('.nav-dropdown.open').forEach(d => {
+            if (d !== dd) { d.classList.remove('open'); d.querySelector('.nav-dropdown-toggle').setAttribute('aria-expanded','false'); }
+          });
+          dd.classList.toggle('open', !isOpen);
+          btn.setAttribute('aria-expanded', String(!isOpen));
+        });
+      });
+      document.querySelectorAll('.nav-dropdown').forEach(dd => {
+        const btn = dd.querySelector('.nav-dropdown-toggle');
+        dd.addEventListener('mouseenter', () => { if (!isMobile()) btn.setAttribute('aria-expanded','true'); });
+        dd.addEventListener('mouseleave', () => { if (!isMobile()) btn.setAttribute('aria-expanded','false'); });
+      });
+      document.addEventListener('click', e => {
+        if (!e.target.closest('.nav-dropdown') && !e.target.closest('.nav-toggle')) {
+          document.querySelectorAll('.nav-dropdown.open').forEach(d => { d.classList.remove('open'); d.querySelector('.nav-dropdown-toggle').setAttribute('aria-expanded','false'); });
+        }
+      });
+      document.querySelectorAll('.nav-dropdown-menu a').forEach(link => {
+        link.addEventListener('click', () => { if (isMobile()) document.querySelector('.nav-links').classList.remove('open'); });
+      });
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') document.querySelectorAll('.nav-dropdown.open').forEach(d => { d.classList.remove('open'); d.querySelector('.nav-dropdown-toggle').setAttribute('aria-expanded','false'); d.querySelector('.nav-dropdown-toggle').focus(); });
+      });
+    })();
+  </script>
 </body>
 </html>

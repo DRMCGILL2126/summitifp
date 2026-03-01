@@ -30,12 +30,30 @@
       </button>
       <ul class="nav-links">
         <li><a href="/">Home</a></li>
-        <li><a href="/pages/about.html">About</a></li>
-        <li><a href="/pages/services.html">Services</a></li>
-        <li><a href="/pages/fees.html">Fees</a></li>
-        <li><a href="/pages/why-work-with-me.html">Why Work With Me</a></li>
-        <li><a href="/pages/insights.html" class="active">Market Insights</a></li>
-        <li><a href="/pages/knowledge-center.html">Knowledge Center</a></li>
+        <li class="nav-dropdown">
+          <button class="nav-dropdown-toggle" aria-expanded="false" aria-haspopup="true">About <svg class="nav-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 5 6 8 9 5"/></svg></button>
+          <ul class="nav-dropdown-menu">
+            <li><a href="/pages/about.html">About Michael McGill</a></li>
+            <li><a href="/pages/why-work-with-me.html">Why Work With Me</a></li>
+            <li><a href="/pages/what-to-expect.html">What to Expect</a></li>
+          </ul>
+        </li>
+        <li class="nav-dropdown">
+          <button class="nav-dropdown-toggle" aria-expanded="false" aria-haspopup="true">Services <svg class="nav-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 5 6 8 9 5"/></svg></button>
+          <ul class="nav-dropdown-menu">
+            <li><a href="/pages/services.html">Our Services</a></li>
+            <li><a href="/pages/fees.html">Fees &amp; Pricing</a></li>
+            <li><a href="/pages/retirement-calculator.html">Retirement Calculator</a></li>
+          </ul>
+        </li>
+        <li class="nav-dropdown">
+          <button class="nav-dropdown-toggle active" aria-expanded="false" aria-haspopup="true">Resources <svg class="nav-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 5 6 8 9 5"/></svg></button>
+          <ul class="nav-dropdown-menu">
+            <li><a href="/pages/insights.html" class="active">Market Insights</a></li>
+            <li><a href="/pages/knowledge-center.html">Knowledge Center</a></li>
+            <li><a href="/pages/faq.html">FAQ</a></li>
+          </ul>
+        </li>
         <li><a href="/pages/contact.html" class="nav-cta">Get in Touch</a></li>
       </ul>
     </div>
