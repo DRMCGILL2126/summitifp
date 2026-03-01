@@ -834,11 +834,13 @@
         });
       }
 
+      // Show results container BEFORE rendering chart so canvas has proper width
+      document.getElementById('resultsContainer').classList.add('show');
+
       renderSummaryCards(results);
       renderChart(results, currentAge, retirementAge, lifeExpectancy);
       renderTable(results, currentAge, retirementAge, lifeExpectancy);
 
-      document.getElementById('resultsContainer').classList.add('show');
       document.getElementById('resultsContainer').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
