@@ -330,6 +330,51 @@
     .chart-canvas-wrapper canvas {
       width: 100%;
       height: auto;
+      cursor: crosshair;
+    }
+
+    /* Chart tooltip */
+    .chart-tooltip {
+      position: absolute;
+      pointer-events: none;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 10px 14px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+      font-size: 0.8rem;
+      line-height: 1.5;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+      z-index: 10;
+      white-space: nowrap;
+    }
+    .chart-tooltip.visible { opacity: 1; }
+    .chart-tooltip .tooltip-title {
+      font-weight: 600;
+      color: #111827;
+      margin-bottom: 4px;
+      font-size: 0.85rem;
+    }
+    .chart-tooltip .tooltip-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .chart-tooltip .tooltip-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .chart-tooltip .tooltip-label {
+      color: #6b7280;
+    }
+    .chart-tooltip .tooltip-value {
+      font-weight: 600;
+      color: #111827;
+      margin-left: auto;
+      padding-left: 12px;
     }
 
     /* Table */
@@ -629,6 +674,7 @@
           </div>
           <div class="chart-canvas-wrapper">
             <canvas id="chartCanvas"></canvas>
+            <div class="chart-tooltip" id="chartTooltip"></div>
           </div>
         </div>
 
@@ -931,6 +977,9 @@
       container.innerHTML = html;
     }
 
+    // ---- Chart hover state ----
+    var chartState = null;
+
     // ---- Render chart ----
     function renderChart(results, currentAge, retirementAge, lifeExpectancy) {
       var canvas = document.getElementById('chartCanvas');
@@ -1067,6 +1116,29 @@
         ctx.stroke();
       }
 
+      // Draw dots at every 5-year interval and store positions for hover
+      var dotPoints = [];
+      for (var s = 0; s < results.length; s++) {
+        var data = results[s].data;
+        for (var j = 0; j < data.length; j++) {
+          var age = data[j].age;
+          if ((age - currentAge) % 5 === 0) {
+            var px = xPos(age);
+            var py = yPos(data[j].balance);
+            // White fill with colored border
+            ctx.fillStyle = '#fff';
+            ctx.strokeStyle = results[s].color;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(px, py, 4, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+
+            dotPoints.push({ x: px, y: py, age: age, scenario: s });
+          }
+        }
+      }
+
       // Axes
       ctx.strokeStyle = '#d1d5db';
       ctx.lineWidth = 1.5;
@@ -1075,7 +1147,146 @@
       ctx.lineTo(padLeft, padTop + chartH);
       ctx.lineTo(padLeft + chartW, padTop + chartH);
       ctx.stroke();
+
+      // Store chart state for hover interaction
+      chartState = {
+        results: results,
+        currentAge: currentAge,
+        retirementAge: retirementAge,
+        lifeExpectancy: lifeExpectancy,
+        xPos: xPos,
+        yPos: yPos,
+        dotPoints: dotPoints,
+        dpr: dpr
+      };
     }
+
+    // ---- Chart hover tooltips ----
+    (function() {
+      var canvas = document.getElementById('chartCanvas');
+      var tooltip = document.getElementById('chartTooltip');
+      var wrapper = canvas.parentElement;
+      var activeAge = null;
+
+      canvas.addEventListener('mousemove', function(e) {
+        if (!chartState) return;
+        var rect = canvas.getBoundingClientRect();
+        var mx = (e.clientX - rect.left) * (canvas.width / rect.width) / chartState.dpr;
+        var my = (e.clientY - rect.top) * (canvas.height / rect.height) / chartState.dpr;
+
+        // Find closest dot within 18px
+        var closestAge = null;
+        var closestDist = 18;
+        for (var i = 0; i < chartState.dotPoints.length; i++) {
+          var dot = chartState.dotPoints[i];
+          var dist = Math.sqrt(Math.pow(mx - dot.x, 2) + Math.pow(my - dot.y, 2));
+          if (dist < closestDist) {
+            closestDist = dist;
+            closestAge = dot.age;
+          }
+        }
+
+        if (closestAge !== null && closestAge !== activeAge) {
+          activeAge = closestAge;
+          var results = chartState.results;
+          var idx = closestAge - chartState.currentAge;
+          var html = '<div class="tooltip-title">Age ' + closestAge + '</div>';
+          for (var s = 0; s < results.length; s++) {
+            var val = results[s].data[idx] ? results[s].data[idx].balance : 0;
+            var depleted = val === 0 && closestAge > chartState.retirementAge && results[s].ranOutAge !== null && closestAge >= results[s].ranOutAge;
+            html += '<div class="tooltip-row">';
+            html += '<span class="tooltip-dot" style="background:' + results[s].color + '"></span>';
+            html += '<span class="tooltip-label">' + results[s].label + '</span>';
+            html += '<span class="tooltip-value">' + (depleted ? 'Depleted' : formatDollar(val)) + '</span>';
+            html += '</div>';
+          }
+          tooltip.innerHTML = html;
+          tooltip.classList.add('visible');
+
+          // Position tooltip near the middle dot for this age
+          var midDotY = 0;
+          var count = 0;
+          for (var i = 0; i < chartState.dotPoints.length; i++) {
+            if (chartState.dotPoints[i].age === closestAge) {
+              midDotY += chartState.dotPoints[i].y;
+              count++;
+            }
+          }
+          midDotY = midDotY / count;
+          var tipX = chartState.xPos(closestAge);
+          // Convert canvas coords to CSS coords
+          var cssScale = canvas.clientWidth / (canvas.width / chartState.dpr);
+          var tipLeft = tipX * cssScale + 12;
+          var tipTop = midDotY * cssScale - tooltip.offsetHeight / 2;
+          // Keep tooltip within wrapper bounds
+          if (tipLeft + tooltip.offsetWidth > wrapper.clientWidth) {
+            tipLeft = tipX * cssScale - tooltip.offsetWidth - 12;
+          }
+          if (tipTop < 0) tipTop = 4;
+          if (tipTop + tooltip.offsetHeight > canvas.clientHeight) tipTop = canvas.clientHeight - tooltip.offsetHeight - 4;
+          tooltip.style.left = tipLeft + 'px';
+          tooltip.style.top = tipTop + 'px';
+
+          // Redraw chart with highlighted dots
+          renderChart(chartState.results, chartState.currentAge, chartState.retirementAge, chartState.lifeExpectancy);
+          // Draw enlarged dots for active age (ctx already has dpr scale from renderChart)
+          var ctx = canvas.getContext('2d');
+          for (var s = 0; s < results.length; s++) {
+            var d = results[s].data[idx];
+            if (d) {
+              var px = chartState.xPos(d.age);
+              var py = chartState.yPos(d.balance);
+              ctx.fillStyle = results[s].color;
+              ctx.strokeStyle = '#fff';
+              ctx.lineWidth = 2;
+              ctx.beginPath();
+              ctx.arc(px, py, 6, 0, Math.PI * 2);
+              ctx.fill();
+              ctx.stroke();
+            }
+          }
+        } else if (closestAge === null && activeAge !== null) {
+          activeAge = null;
+          tooltip.classList.remove('visible');
+          renderChart(chartState.results, chartState.currentAge, chartState.retirementAge, chartState.lifeExpectancy);
+        }
+      });
+
+      canvas.addEventListener('mouseleave', function() {
+        if (!chartState) return;
+        activeAge = null;
+        tooltip.classList.remove('visible');
+        renderChart(chartState.results, chartState.currentAge, chartState.retirementAge, chartState.lifeExpectancy);
+      });
+
+      // Touch support for mobile
+      canvas.addEventListener('touchstart', function(e) {
+        if (!chartState) return;
+        var touch = e.touches[0];
+        var rect = canvas.getBoundingClientRect();
+        var mx = (touch.clientX - rect.left) * (canvas.width / rect.width) / chartState.dpr;
+        var my = (touch.clientY - rect.top) * (canvas.height / rect.height) / chartState.dpr;
+
+        var closestAge = null;
+        var closestDist = 30; // larger hit target for touch
+        for (var i = 0; i < chartState.dotPoints.length; i++) {
+          var dot = chartState.dotPoints[i];
+          var dist = Math.sqrt(Math.pow(mx - dot.x, 2) + Math.pow(my - dot.y, 2));
+          if (dist < closestDist) {
+            closestDist = dist;
+            closestAge = dot.age;
+          }
+        }
+
+        if (closestAge !== null) {
+          e.preventDefault();
+          canvas.dispatchEvent(new MouseEvent('mousemove', {
+            clientX: touch.clientX,
+            clientY: touch.clientY
+          }));
+        }
+      }, { passive: false });
+    })();
 
     // ---- Render table ----
     function renderTable(results, currentAge, retirementAge, lifeExpectancy) {
